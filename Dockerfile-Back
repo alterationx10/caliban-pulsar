@@ -5,7 +5,7 @@ COPY ./src/main/scala/empty.scala src/main/scala/empty.scala
 COPY ./project/build.properties project/build.properties
 COPY build.sbt .
 COPY sbtx .
-RUN ./sbtx compile
+RUN ./sbtx update
 # Be lazy like me, and pre-compile things before copying them over :-)
 COPY . .
-CMD ["./sbtx", "runMain Caliban"]
+CMD ["./sbtx", "runMain Back"]

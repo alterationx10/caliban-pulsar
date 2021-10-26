@@ -4,6 +4,7 @@ import redis.clients.jedis.{Jedis, JedisPool, JedisPoolConfig}
 import zio._
 
 object RedisProvider {
+  val host = "host.docker.internal"
 
   val redisPool: ZLayer[Any, Throwable, Has[JedisPool]] = ZLayer.fromAcquireRelease {
     Task {
@@ -19,7 +20,7 @@ object RedisProvider {
       poolConfig.setTimeBetweenEvictionRuns(Duration.ofSeconds(30))
       poolConfig.setNumTestsPerEvictionRun(3)
       poolConfig.setBlockWhenExhausted(true)
-      new JedisPool(poolConfig, "localhost")
+      new JedisPool(poolConfig, host)
     }
   }(r => ZIO.succeed(r.close()))
 

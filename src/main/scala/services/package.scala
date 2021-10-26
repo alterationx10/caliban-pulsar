@@ -1,4 +1,4 @@
-import org.apache.pulsar.client.api.{AuthenticationFactory, ClientBuilder, Consumer, Producer, PulsarClient, Schema}
+import org.apache.pulsar.client.api.{AuthenticationFactory, ClientBuilder, Consumer, Producer, PulsarClient, Schema, SubscriptionMode, SubscriptionType}
 import zio._
 
 import scala.jdk.CollectionConverters._
@@ -29,6 +29,7 @@ package object services {
         .newConsumer(Schema.STRING)
         .topics(config.topics.asJava)
         .subscriptionName(config.subscription)
+        .subscriptionType(SubscriptionType.Shared) // Caliban should be exclusive, but we start with a unique ID so no competition
         .subscribe()
     }
     def release: UIO[Unit] = Task.effectTotal(client.close())

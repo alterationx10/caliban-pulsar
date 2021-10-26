@@ -14,3 +14,22 @@ services:
     environment:
       PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
     command: bin/pulsar standalone
+
+  caliban:
+    build:
+      dockerfile: Dockerfile-Caliban
+    ports:
+      - "8088"
+
+  backend:
+    build:
+      dockerfile: Dockerfile-Back
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - caliban
+    ports:
+      - "8088:8088"
