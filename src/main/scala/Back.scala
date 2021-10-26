@@ -44,8 +44,8 @@ object Back extends App {
       Task(redis.set(model.id, model.toJson))
         .map(status => ResponseEvent(id = model.id, status = status))
     }
-    mId      <- Task(producer.send(response.toJson))
-    _        <- putStrLn(s"Sent ${response.toJson} with MessageId ${mId.toString}")
+    mId      <- Task(producer.send(response.toJson).toString)
+    _        <- putStrLn(s"Sent ${response.toJson} with MessageId ${mId}")
   } yield ()
 
   val program = for {
