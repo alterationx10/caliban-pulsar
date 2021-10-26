@@ -1,11 +1,11 @@
 FROM adoptopenjdk/openjdk16
 
 WORKDIR /app
-COPY ./src/main/scala/empty.scala src/main/scala/empty.scala
-COPY ./project/build.properties project/build.properties
-COPY build.sbt .
-COPY sbtx .
-RUN ./sbtx compile
-# Be lazy like me, and pre-compile things before copying them over :-)
-COPY . .
-CMD ["./sbtx", "runMain Caliban"]
+# Please run "sbt Docker/stage" to pre-compoile everything,
+# and just copy stuff over
+COPY target/docker/stage/2/opt/docker/lib/* /opt/docker/lib/
+COPY target/docker/stage/4/opt/docker/lib/* /opt/docker/lib/
+# Need a shell to expand environment variables
+# Need : as beginning delimiter for classpath
+ENV MAIN_CLASS=Caliban
+CMD ["sh", "-c", "java -cp :/opt/docker/lib/* ${MAIN_CLASS}"]

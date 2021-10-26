@@ -16,5 +16,6 @@ val deps = Seq(
 lazy val root = (project in file("."))
   .settings(
     name := "caliban-pulsar",
-    libraryDependencies ++= deps
-  )
+    libraryDependencies ++= deps,
+  ).enablePlugins(JavaAppPackaging)
+
