@@ -35,13 +35,15 @@ object SubscriptionService {
 
 object SubHub {
 
-  private val acquire: ZIO[Has[Consumer[String]], Throwable, Hub[ResponseEvent]] = for {
+  private val acquire
+      : ZIO[Has[Consumer[String]], Throwable, Hub[ResponseEvent]] = for {
     hub <- Hub.unbounded[ResponseEvent]
     _ <- ZIO.serviceWith[Consumer[String]] { consumer =>
       Task(consumer.receive())
         .tap(msg => Task(consumer.acknowledge(msg)))
         .map(msg => new String(msg.getData))
-        .flatMap(str => ZIO.fromEither(str.fromJson)).mapError(err => new Exception(err.toString))
+        .flatMap(str => ZIO.fromEither(str.fromJson))
+        .mapError(err => new Exception(err.toString))
         .flatMap(event => hub.publish(event))
         .forever
         .forkDaemon

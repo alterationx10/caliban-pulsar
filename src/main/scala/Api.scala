@@ -1,11 +1,11 @@
 
 import caliban.GraphQL.graphQL
-import caliban.{GraphQL, RootResolver}
+import caliban.RootResolver
 import caliban.schema.{GenericSchema, Schema}
-import domain.UserEvent
+import domain.{EventArgs, UserEvent}
 import org.apache.pulsar.client.api.{Consumer, Producer}
 import repository.UserEventRepository
-import schema.{EventArgs, Mutations, Queries, Subscriptions}
+import schema.{Mutations, Queries, Subscriptions}
 import services.SubscriptionService
 import zio._
 import zio.json._

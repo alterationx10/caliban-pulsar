@@ -10,12 +10,3 @@ case class UserEvent(
 object UserEvent {
   implicit val codec: JsonCodec[UserEvent] = DeriveJsonCodec.gen[UserEvent]
 }
-
-case class ResponseEvent(
-    id: String,
-    status: String
-)
-
-object ResponseEvent {
-  implicit val codec = DeriveJsonCodec.gen[ResponseEvent]
-}

@@ -4,7 +4,8 @@ import redis.clients.jedis.{Jedis, JedisPool, JedisPoolConfig}
 import zio._
 
 object RedisProvider {
-  val host = "host.docker.internal"
+
+  private val host = sys.env.getOrElse("REDIS_HOST", "localhost")
 
   val redisPool: ZLayer[Any, Throwable, Has[JedisPool]] = ZLayer.fromAcquireRelease {
     Task {

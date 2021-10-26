@@ -1,4 +1,4 @@
-import org.apache.pulsar.client.api.{AuthenticationFactory, ClientBuilder, Consumer, Producer, PulsarClient, Schema, SubscriptionMode, SubscriptionType}
+import org.apache.pulsar.client.api._
 import zio._
 
 import scala.jdk.CollectionConverters._
@@ -6,7 +6,11 @@ import scala.jdk.CollectionConverters._
 package object services {
   case class PulsarClientConfig(serviceUrl: String, jwt: Option[String] = None)
   case class PulsarProducerConfig(topic: String)
-  case class PulsarConsumerConfig(topics: List[String], subscription: String)
+  case class PulsarConsumerConfig(
+      topics: List[String],
+      subscription: String,
+      subscriptionType: SubscriptionType = SubscriptionType.Exclusive
+  )
 
   implicit class ExtendedPulsarClientBuilder(builder: ClientBuilder) {
 
@@ -24,12 +28,14 @@ package object services {
   }
 
   implicit class ExtendedPulsarClient(client: PulsarClient) {
-    def newConsumerFromConfig(config: PulsarConsumerConfig): Consumer[String] = {
+    def newConsumerFromConfig(
+        config: PulsarConsumerConfig
+    ): Consumer[String] = {
       client
         .newConsumer(Schema.STRING)
         .topics(config.topics.asJava)
         .subscriptionName(config.subscription)
-        .subscriptionType(SubscriptionType.Shared) // Caliban should be exclusive, but we start with a unique ID so no competition
+        .subscriptionType(config.subscriptionType)
         .subscribe()
     }
     def release: UIO[Unit] = Task.effectTotal(client.close())

@@ -9,6 +9,9 @@ object PulsarClientProvider {
       config <- ZIO.service[PulsarClientConfig]
     } yield PulsarClient.builder().buildFromConfig(config)
 
-  val managed: ZManaged[Has[PulsarClientConfig], Throwable, PulsarClient]  = ZManaged.make(acquire)(_.release)
-  val layer: ZLayer[Has[PulsarClientConfig], Throwable, Has[PulsarClient]] = ZLayer.fromManaged(managed)
+  val managed: ZManaged[Has[PulsarClientConfig], Throwable, PulsarClient] =
+    ZManaged.make(acquire)(_.release)
+
+  val layer: ZLayer[Has[PulsarClientConfig], Throwable, Has[PulsarClient]] =
+    ZLayer.fromManaged(managed)
 }

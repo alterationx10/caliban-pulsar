@@ -18,12 +18,18 @@ services:
   caliban:
     build:
       dockerfile: Dockerfile-Caliban
+    environment:
+      REDIS_HOST: "redis"
+      PULSAR_HOST: "pulsar"
     ports:
       - "8088"
 
   backend:
     build:
       dockerfile: Dockerfile-Back
+    environment:
+      REDIS_HOST: "redis"
+      PULSAR_HOST: "pulsar"
 
   nginx:
     image: nginx:latest

@@ -1,6 +1,6 @@
 package schema
 
-import domain.ResponseEvent
+import domain.{EventArgs, ResponseEvent}
 import services.SubscriptionService
 import zio._
 import zio.stream._
