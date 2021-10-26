@@ -1,0 +1,6 @@
+FROM adoptopenjdk/openjdk16
+
+WORKDIR /app
+COPY . .
+RUN ./sbtx compile
+CMD ["./sbtx", "caliban/runMain Caliban"]

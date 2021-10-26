@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  pulsar:
+    image: apachepulsar/pulsar:2.6.4
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    environment:
+      PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
+    command: bin/pulsar standalone
