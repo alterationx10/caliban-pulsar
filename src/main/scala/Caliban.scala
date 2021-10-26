@@ -1,7 +1,15 @@
 import caliban.ZHttpAdapter
 import org.apache.pulsar.client.api.{Consumer, Producer, PulsarClient}
 import repository.UserEventRepository
-import services.{PulsarClientConfig, PulsarClientProvider, PulsarConsumerConfig, PulsarConsumerProvider, PulsarProducerConfig, PulsarProducerProvider, SubscriptionService}
+import services.{
+  PulsarClientConfig,
+  PulsarClientProvider,
+  PulsarConsumerConfig,
+  PulsarConsumerProvider,
+  PulsarProducerConfig,
+  PulsarProducerProvider,
+  SubscriptionService
+}
 import zhttp.http._
 import zhttp.service.Server
 import zio._
@@ -40,13 +48,13 @@ object Caliban extends App {
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
     (for {
       interpreter <- Api.api.interpreter
-      _ <- Server
+      _           <- Server
         .start(
           8088,
           Http.route {
             case _ -> Root / "api" / "graphql" =>
               ZHttpAdapter.makeHttpService(interpreter)
-            case _ -> Root / "ws" / "graphql" =>
+            case _ -> Root / "ws" / "graphql"  =>
               ZHttpAdapter.makeWebSocketService(interpreter)
           }
         )

@@ -6,10 +6,11 @@ import scala.jdk.CollectionConverters._
 package object services {
   case class PulsarClientConfig(serviceUrl: String, jwt: Option[String] = None)
   case class PulsarProducerConfig(topic: String)
+
   case class PulsarConsumerConfig(
-      topics: List[String],
-      subscription: String,
-      subscriptionType: SubscriptionType = SubscriptionType.Exclusive
+    topics: List[String],
+    subscription: String,
+    subscriptionType: SubscriptionType = SubscriptionType.Exclusive
   )
 
   implicit class ExtendedPulsarClientBuilder(builder: ClientBuilder) {
@@ -28,8 +29,9 @@ package object services {
   }
 
   implicit class ExtendedPulsarClient(client: PulsarClient) {
+
     def newConsumerFromConfig(
-        config: PulsarConsumerConfig
+      config: PulsarConsumerConfig
     ): Consumer[String] = {
       client
         .newConsumer(Schema.STRING)

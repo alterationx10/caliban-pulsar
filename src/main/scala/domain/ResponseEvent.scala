@@ -3,8 +3,8 @@ package domain
 import zio.json.{DeriveJsonCodec, JsonCodec}
 
 case class ResponseEvent(
-    id: String,
-    status: String
+  id: String,
+  status: String
 )
 
 object ResponseEvent {

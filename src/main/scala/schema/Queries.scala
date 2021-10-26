@@ -5,5 +5,5 @@ import domain.{EventArgs, UserEvent}
 import repository.UserEventRepository
 
 case class Queries(
-    event: EventArgs => RIO[Has[UserEventRepository], Option[UserEvent]]
+  event: EventArgs => RIO[Has[UserEventRepository], Option[UserEvent]]
 )

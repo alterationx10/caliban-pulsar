@@ -1,4 +1,5 @@
 package services
+
 import org.apache.pulsar.client.api.{Consumer, PulsarClient}
 import zio._
 

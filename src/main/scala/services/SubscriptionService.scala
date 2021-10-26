@@ -11,8 +11,8 @@ trait SubscriptionService {
   def events(id: String): ZStream[Any, Throwable, ResponseEvent]
 }
 
-case class SubscriptionServiceLive(hub: Hub[ResponseEvent])
-    extends SubscriptionService {
+case class SubscriptionServiceLive(hub: Hub[ResponseEvent]) extends SubscriptionService {
+
   override def events(id: String): ZStream[Any, Throwable, ResponseEvent] =
     ZStream.unwrapManaged(
       hub.subscribe.map(
@@ -24,21 +24,21 @@ case class SubscriptionServiceLive(hub: Hub[ResponseEvent])
 }
 
 object SubscriptionService {
+
   val live: ZLayer[Has[Consumer[String]], Throwable, Has[SubscriptionService]] =
     SubHub.live >>> (SubscriptionServiceLive(_)).toLayer
 
   def events(
-      id: String
+    id: String
   ): ZStream[Has[SubscriptionService], Throwable, ResponseEvent] =
     ZStream.accessStream(_.get.events(id))
 }
 
 object SubHub {
 
-  private val acquire
-      : ZIO[Has[Consumer[String]], Throwable, Hub[ResponseEvent]] = for {
+  private val acquire: ZIO[Has[Consumer[String]], Throwable, Hub[ResponseEvent]] = for {
     hub <- Hub.unbounded[ResponseEvent]
-    _ <- ZIO.serviceWith[Consumer[String]] { consumer =>
+    _   <- ZIO.serviceWith[Consumer[String]] { consumer =>
       Task(consumer.receive())
         .tap(msg => Task(consumer.acknowledge(msg)))
         .map(msg => new String(msg.getData))

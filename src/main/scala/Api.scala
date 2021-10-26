@@ -1,4 +1,3 @@
-
 import caliban.GraphQL.graphQL
 import caliban.RootResolver
 import caliban.schema.{GenericSchema, Schema}
@@ -12,14 +11,13 @@ import zio.json._
 
 import scala.language.postfixOps
 
-object Api extends GenericSchema[
-  Has[UserEventRepository] with Has[Producer[String]] with Has[SubscriptionService] with Has[Consumer[String]]
-]{
+object Api
+    extends GenericSchema[
+      Has[UserEventRepository] with Has[Producer[String]] with Has[SubscriptionService] with Has[Consumer[String]]
+    ] {
 
-
-  implicit val argSchema: Schema[Any, EventArgs] = Schema.genMacro[EventArgs].schema
+  implicit val argSchema: Schema[Any, EventArgs]       = Schema.genMacro[EventArgs].schema
   implicit val userEventSchema: Schema[Any, UserEvent] = Schema.genMacro[UserEvent].schema
-
 
   val api = graphQL(
     RootResolver(
@@ -29,6 +27,4 @@ object Api extends GenericSchema[
     )
   )
 
-
 }
-
