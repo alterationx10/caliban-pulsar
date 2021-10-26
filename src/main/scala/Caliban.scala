@@ -26,7 +26,7 @@ object Caliban extends App {
 
   val producer: ZLayer[Any, Throwable, Has[Producer[String]]] =
     (client ++ ZLayer.succeed(
-      PulsarProducerConfig(topic = "back")
+      PulsarProducerConfig(topic = "backend")
     )) >>> PulsarProducerProvider.layer
 
   val consumer: ZLayer[Any, Throwable, Has[Consumer[String]]] =

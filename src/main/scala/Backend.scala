@@ -3,13 +3,11 @@ import org.apache.pulsar.client.api.{Consumer, Producer, PulsarClient, Subscript
 import redis.clients.jedis.JedisPool
 import repository.{RedisProvider, UserEventRepository}
 import services.{PulsarClientConfig, PulsarClientProvider, PulsarConsumerConfig, PulsarConsumerProvider, PulsarProducerConfig, PulsarProducerProvider}
-import zio.{Task, _}
-import zio.console.{putStr, putStrLn, Console}
-
-import java.util.UUID
+import zio.console.{Console, putStrLn}
 import zio.json._
+import zio.{Task, _}
 
-object Back extends App {
+object Backend extends App {
 
   val host: String = sys.env.getOrElse("PULSAR_HOST", "localhost")
 
@@ -25,8 +23,8 @@ object Back extends App {
   val consumer: ZLayer[Any, Throwable, Has[Consumer[String]]] =
     (client ++ ZLayer.succeed(
       PulsarConsumerConfig(
-        topics = List("back"),
-        subscription = s"back-shared",
+        topics = List("backend"),
+        subscription = s"backend",
         subscriptionType = SubscriptionType.Shared
       )
     )) >>> PulsarConsumerProvider.layer

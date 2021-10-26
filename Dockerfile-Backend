@@ -7,5 +7,5 @@ COPY target/docker/stage/2/opt/docker/lib/* /opt/docker/lib/
 COPY target/docker/stage/4/opt/docker/lib/* /opt/docker/lib/
 # Need a shell to expand environment variables
 # Need : as beginning delimiter for classpath
-ENV MAIN_CLASS=Back
+ENV MAIN_CLASS=Backend
 CMD ["sh", "-c", "java -cp :/opt/docker/lib/* ${MAIN_CLASS}"]
