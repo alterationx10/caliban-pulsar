@@ -47,7 +47,7 @@ object Backend extends App {
   } yield ()
 
   val program = for {
-    _        <- putStrLn("Starting Back...")
+    _        <- putStrLn("Starting Backend...")
     producer <- ZIO.service[Producer[String]]
     consumer <- ZIO.service[Consumer[String]]
     _        <- consumerLogic(producer, consumer).forever
